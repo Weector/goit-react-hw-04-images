@@ -38,8 +38,6 @@ class ImageGallery extends Component {
       this.setState({ loading: true });
       Fetch(this.props.query, 1)
         .then(resp => {
-          console.log(resp);
-          console.log(this.state.pictures.length);
           this.setState({
             pictures: resp.hits,
             counter: 1,
@@ -56,7 +54,7 @@ class ImageGallery extends Component {
   render() {
     const { pictures, loading, more } = this.state;
     const { toggleModal } = this.props;
-    console.log(this.state.pictures.length);
+
     return (
       <>
         {loading && <Loader className={css.loader} />}
