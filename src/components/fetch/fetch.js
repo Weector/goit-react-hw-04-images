@@ -12,7 +12,7 @@ async function Fetch(query, counter) {
         autoClose: 2500,
         closeOnClick: true,
       });
-    return response.data.hits;
+    return response.data;
   } catch (error) {
     console.log(error);
   }
