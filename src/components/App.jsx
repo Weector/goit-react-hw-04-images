@@ -1,11 +1,9 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
+
+import { ImageGallery, Searchbar, Modal } from './index';
+
 import 'react-toastify/dist/ReactToastify.css';
-
-import ImageGallery from './ImageGallery/ImageGallery';
-import Searchbar from './Searchbar/Searchbar';
-import Modal from './Modal/Modal';
-
 import css from './app.module.css';
 
 class App extends Component {

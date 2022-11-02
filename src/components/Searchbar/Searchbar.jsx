@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
 import { BiSearchAlt2 } from 'react-icons/bi';
+import PropTypes from 'prop-types';
+
 import css from './searchbar.module.css';
 
 class Searchbar extends Component {
@@ -49,3 +51,7 @@ class Searchbar extends Component {
   }
 }
 export default Searchbar;
+
+Searchbar.propTypes = {
+  onQuery: PropTypes.func.isRequired,
+};

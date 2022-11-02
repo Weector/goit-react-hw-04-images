@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 
 import css from './Modal.module.css';
 
@@ -44,3 +45,8 @@ class Modal extends Component {
   }
 }
 export default Modal;
+
+Modal.propTypes = {
+  toggleModal: PropTypes.func.isRequired,
+  bigImgUrl: PropTypes.string.isRequired,
+};

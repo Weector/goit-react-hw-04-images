@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import css from './imageGalleryItem.module.css';
 
@@ -24,3 +25,15 @@ const ImageGalleryItem = ({ pictures, toggleModal }) => {
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  pictures: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tag: PropTypes.string,
+    })
+  ),
+  toggleModal: PropTypes.func.isRequired,
+};

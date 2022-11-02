@@ -1,13 +1,10 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
-import Button from 'components/Button/Button';
-import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
-import Loader from 'components/Loader/Loader';
+import { Button, ImageGalleryItem, Loader, Fetch } from '../index';
 
 import css from './ImageGallery.module.css';
-import Fetch from 'components/fetch/fetch';
-
 class ImageGallery extends Component {
   state = {
     pictures: [],
@@ -62,3 +59,8 @@ class ImageGallery extends Component {
 }
 
 export default ImageGallery;
+
+ImageGallery.propTypes = {
+  query: PropTypes.string.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+};
