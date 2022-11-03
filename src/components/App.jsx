@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { ImageGallery, Searchbar, Modal } from './index';
@@ -6,32 +6,28 @@ import { ImageGallery, Searchbar, Modal } from './index';
 import 'react-toastify/dist/ReactToastify.css';
 import css from './app.module.css';
 
-class App extends Component {
-  state = {
-    query: '',
-    modal: false,
-    bigImgUrl: null,
+const App = () => {
+  const [query, setQuery] = useState('');
+  const [bigImgUrl, setBigImgUrl] = useState(null);
+  const [modal, setModal] = useState(false);
+
+  const handelFormSubmit = query => {
+    setQuery(query);
   };
 
-  handelFormSubmit = query => {
-    this.setState({ query });
+  const toggleModal = url => {
+    setModal(!modal);
+    setBigImgUrl(url);
   };
 
-  toggleModal = url => {
-    this.setState(({ modal }) => ({ modal: !modal, bigImgUrl: url }));
-  };
+  return (
+    <div className={css.container}>
+      <Searchbar onQuery={handelFormSubmit} />
+      <ImageGallery query={query} toggleModal={toggleModal} />
+      {modal && <Modal toggleModal={toggleModal} bigImgUrl={bigImgUrl} />}
+      <ToastContainer />
+    </div>
+  );
+};
 
-  render() {
-    const { bigImgUrl, query, modal } = this.state;
-    const { handelFormSubmit, toggleModal } = this;
-    return (
-      <div className={css.container}>
-        <Searchbar onQuery={handelFormSubmit} />
-        <ImageGallery query={query} toggleModal={toggleModal} />
-        {modal && <Modal toggleModal={toggleModal} bigImgUrl={bigImgUrl} />}
-        <ToastContainer />
-      </div>
-    );
-  }
-}
 export default App;

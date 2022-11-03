@@ -1,73 +1,56 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-import { Button, ImageGalleryItem, Loader, Fetch } from '../index';
+import { Button, ImageGalleryItem, Loader, loadImage } from '../index';
 
 import css from './ImageGallery.module.css';
-class ImageGallery extends Component {
-  state = {
-    pictures: [],
-    counter: 1,
-    loading: false,
-    more: true,
-  };
 
-  onHandleButtonClick = () => {
-    this.setState({ loading: true });
-    Fetch(this.props.query, this.state.counter + 1).then(resp => {
-      this.setState({
-        pictures: [...this.state.pictures, ...resp.hits],
-        counter: this.state.counter + 1,
-        loading: false,
-        more: true,
-      });
-      if (resp.totalHits === this.state.pictures.length) {
-        this.setState({ more: false });
-        toast.info('This all :(', {
-          position: 'top-right',
-          autoClose: 2500,
-          closeOnClick: true,
-        });
+const ImageGallery = ({ query, toggleModal }) => {
+  const [pictures, setPictures] = useState([]);
+  const [counter, setCounter] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [more, setMore] = useState(true);
+
+  const onHandleButtonClick = () => {
+    setLoading(true);
+    loadImage(query, counter + 1).then(resp => {
+      setPictures([...pictures, ...resp.hits]);
+      setCounter(counter + 1);
+      setLoading(false);
+      setMore(true);
+
+      if (resp.totalHits === pictures.length) {
+        setMore(false);
       }
     });
   };
 
-  componentDidUpdate(prevProps, _) {
-    if (prevProps !== this.props) {
-      this.setState({ loading: true });
-      Fetch(this.props.query, 1)
-        .then(resp => {
-          this.setState({
-            pictures: resp.hits,
-            counter: 1,
-            loading: false,
-            more: true,
-          });
-        })
+  useEffect(() => {
+    if (!query) return;
+    setLoading(true);
+    loadImage(query, 1)
+      .then(resp => {
+        setPictures(resp.hits);
+        setCounter(1);
+        setLoading(false);
+        setMore(true);
+      })
+      .catch(error => toast.error(error.message) && setLoading(false));
+  }, [query]);
 
-        .catch(
-          error => toast.error({ error }) && this.setState({ loading: false })
-        );
-    }
-  }
-  render() {
-    const { pictures, loading, more } = this.state;
-    const { toggleModal } = this.props;
-
-    return (
-      <>
-        {loading && <Loader className={css.loader} />}
-        <ul className={css.list}>
-          <ImageGalleryItem pictures={pictures} toggleModal={toggleModal} />
-        </ul>
-        {!!pictures?.length && pictures?.length > 11 && more && (
-          <Button onClick={this.onHandleButtonClick}>Load More</Button>
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {loading && <Loader className={css.loader} />}
+      <ul className={css.list}>
+        <ImageGalleryItem pictures={pictures} toggleModal={toggleModal} />
+      </ul>
+      {!!pictures?.length && pictures?.length > 11 && more && (
+        <Button onClick={onHandleButtonClick}>Load More</Button>
+      )}
+    </>
+  );
+};
 
 export default ImageGallery;
 
